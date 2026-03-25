@@ -9,6 +9,7 @@ The format is based on Keep a Changelog, and this project currently tracks relea
 ### Added
 
 - Initial public CLI for scraping fiber arts pattern pages into local JSON, image, and PDF files
+- Branded README header with the SugarStitch logo
 - Plain-text pattern artifacts saved under `texts/<pattern_title>/pattern.txt` for each scraped page
 - README improvements covering installation, usage, selector discovery, troubleshooting, and output structure
 - MIT license
@@ -24,6 +25,9 @@ The format is based on Keep a Changelog, and this project currently tracks relea
 - `OVERVIEW.md` with a technical and development-oriented guide to the project
 - Crawl language filtering to keep discovered URLs focused on one language
 - Crawl pagination support for paginated listing pages and load-more style archives that expose regular page URLs
+- A light/dark mode toggle in the local UI with branded banner swapping
+- Local static serving for UI branding assets and favicon support
+- A colored ASCII SugarStitch banner for the CLI
 
 ### Changed
 
@@ -46,6 +50,7 @@ The format is based on Keep a Changelog, and this project currently tracks relea
 - Made output loading safer by surfacing invalid JSON instead of silently overwriting it
 - Improved result messaging so PDF-only or partial-content matches are clearer in the UI
 - Expanded the README to document crawl mode, output directories, profiles, preview flow, and UI behavior
+- Refreshed the docs so README, OVERVIEW, and CHANGELOG stay aligned with the current UI, output model, and branding
 - Expanded crawl controls in both the CLI and UI to include language and pagination tuning
 
 ### Fixed

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="SugarStitch logo" width="300" height="300" />
+</p>
+
 # SugarStitch
 
 SugarStitch is a TypeScript scraper for fiber arts pattern websites with both a CLI and a local browser UI. It can scrape individual pattern pages, batch lists of URLs, or discover pattern pages from an index page and then scrape those discovered links for titles, text, images, and PDFs.
@@ -221,6 +225,7 @@ The UI includes:
 - output directory field
 - `Test Selectors` preview button
 - `Start Scraping` button
+- light and dark mode toggle
 - spinner/progress overlay while requests are running
 
 ### Output Directory In the UI
@@ -388,6 +393,11 @@ That text file includes:
 - extracted materials list
 - extracted instructions list
 - a fuller page text block gathered from the article content
+
+## Notes
+
+- The CLI prints a small SugarStitch ASCII banner when run in a normal terminal.
+- The local UI now includes a light/dark mode toggle, with light mode as the default.
 
 ## Troubleshooting
 

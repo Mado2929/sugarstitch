@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import * as fs from 'fs/promises';
 import * as http from 'http';
 import * as path from 'path';
 import {
@@ -16,6 +17,31 @@ import {
 } from './scraper';
 
 const PORT = 4177;
+const ROOT_DIRECTORY = process.cwd();
+const ASSETS_DIRECTORY = path.resolve(ROOT_DIRECTORY, 'assets');
+const PUBLIC_DIRECTORY = path.resolve(ROOT_DIRECTORY, 'public');
+
+function getContentType(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase();
+
+  switch (ext) {
+    case '.png':
+      return 'image/png';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.gif':
+      return 'image/gif';
+    case '.svg':
+      return 'image/svg+xml';
+    case '.webp':
+      return 'image/webp';
+    case '.ico':
+      return 'image/x-icon';
+    default:
+      return 'application/octet-stream';
+  }
+}
 
 function escapeHtml(value: string): string {
   return value
@@ -37,6 +63,7 @@ function pageTemplate(content: string): string {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SugarStitch UI</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
   <style>
     :root {
       --bg: #fff8f1;
@@ -49,6 +76,18 @@ function pageTemplate(content: string): string {
       --accent-2: #ffb36b;
       --shadow: 0 22px 60px rgba(110, 66, 44, 0.14);
       --radius: 22px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #1a1418;
+      --panel: rgba(34, 27, 33, 0.84);
+      --panel-strong: #231c21;
+      --text: #f6e9e2;
+      --muted: #d0b7ae;
+      --line: rgba(255, 214, 196, 0.12);
+      --accent: #ff8f73;
+      --accent-2: #ffc074;
+      --shadow: 0 24px 64px rgba(0, 0, 0, 0.38);
     }
 
     * { box-sizing: border-box; }
@@ -64,11 +103,68 @@ function pageTemplate(content: string): string {
         linear-gradient(180deg, #fff5ea 0%, #fffdfa 50%, #fff7f1 100%);
     }
 
+    html[data-theme="dark"] body {
+      background:
+        radial-gradient(circle at top left, rgba(255, 143, 115, 0.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(126, 203, 255, 0.12), transparent 26%),
+        linear-gradient(180deg, #151015 0%, #1a1418 48%, #110d11 100%);
+    }
+
     .shell {
       width: min(1080px, calc(100% - 32px));
       margin: 32px auto;
       display: grid;
       gap: 20px;
+    }
+
+    .shell-top {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle-label {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .theme-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .theme-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .hero,
@@ -117,12 +213,53 @@ function pageTemplate(content: string): string {
       border: 1px solid rgba(140, 74, 51, 0.12);
     }
 
+    html[data-theme="dark"] .kicker {
+      color: #ffd3c2;
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 211, 194, 0.12);
+    }
+
     .sub {
       max-width: 720px;
       margin: 0;
       color: var(--muted);
       font-size: 1.05rem;
       line-height: 1.55;
+    }
+
+    .hero-banner {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 760px);
+      margin-top: 8px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 42px rgba(110, 66, 44, 0.16);
+      background: rgba(255, 255, 255, 0.54);
+    }
+
+    .hero-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hero-banner .hero-banner-dark {
+      display: none;
+    }
+
+    html[data-theme="dark"] .hero-banner {
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    html[data-theme="dark"] .hero-banner .hero-banner-light {
+      display: none;
+    }
+
+    html[data-theme="dark"] .hero-banner .hero-banner-dark {
+      display: block;
     }
 
     .grid {
@@ -258,6 +395,12 @@ function pageTemplate(content: string): string {
       white-space: normal;
     }
 
+    html[data-theme="dark"] .list,
+    html[data-theme="dark"] .stat,
+    html[data-theme="dark"] details {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
     .list ul {
       margin: 0;
       padding-left: 18px;
@@ -318,6 +461,10 @@ function pageTemplate(content: string): string {
       z-index: 999;
     }
 
+    html[data-theme="dark"] .overlay {
+      background: rgba(17, 13, 17, 0.72);
+    }
+
     .overlay.active {
       display: flex;
     }
@@ -330,6 +477,11 @@ function pageTemplate(content: string): string {
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       text-align: center;
+    }
+
+    html[data-theme="dark"] .log {
+      background: #120e12;
+      color: #ffe8dc;
     }
 
     .spinner {
@@ -388,14 +540,57 @@ function pageTemplate(content: string): string {
     </div>
   </div>
   <main class="shell">
+    <div class="shell-top">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <span id="themeIcon" class="theme-icon" aria-hidden="true"></span>
+        <span id="themeLabel" class="theme-toggle-label">Dark mode</span>
+      </button>
+    </div>
     ${content}
   </main>
   <script>
     (() => {
+      const root = document.documentElement;
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeLabel = document.getElementById('themeLabel');
       const forms = document.querySelectorAll('form[data-enhanced="true"]');
       const overlay = document.getElementById('workingOverlay');
       const overlayTitle = document.getElementById('overlayTitle');
       const overlayMessage = document.getElementById('overlayMessage');
+      const darkIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 1 1 12.5 4a6.5 6.5 0 0 0 7.5 11.5Z"></path></svg>';
+      const lightIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>';
+
+      const getPreferredTheme = () => {
+        const savedTheme = window.localStorage.getItem('sugarstitch-theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          return savedTheme;
+        }
+        return 'light';
+      };
+
+      const applyTheme = (theme) => {
+        root.setAttribute('data-theme', theme);
+        if (themeToggle) {
+          themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        }
+        if (themeIcon) {
+          themeIcon.innerHTML = theme === 'dark' ? lightIcon : darkIcon;
+        }
+        if (themeLabel) {
+          themeLabel.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+        }
+      };
+
+      applyTheme(getPreferredTheme());
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          window.localStorage.setItem('sugarstitch-theme', nextTheme);
+          applyTheme(nextTheme);
+        });
+      }
 
       forms.forEach((form) => {
         form.addEventListener('submit', (event) => {
@@ -480,8 +675,10 @@ async function renderHome(values?: Record<string, string>, message?: string): Pr
   return pageTemplate(`
     <section class="hero">
       <span class="kicker">Sweet little scraping station</span>
-      <h1>SugarStitch UI</h1>
-      <p class="sub">A tiny local interface for people who would rather click through a form than juggle terminal flags. Choose a mode, paste a URL or a list, and let the scraper do the rest.</p>
+      <div class="hero-banner">
+        <img class="hero-banner-light" src="/assets/banner_light.png" alt="SugarStitch banner for light mode" />
+        <img class="hero-banner-dark" src="/assets/banner_dark.png" alt="SugarStitch banner for dark mode" />
+      </div>
     </section>
 
     <section class="grid">
@@ -1002,6 +1199,23 @@ async function handlePreview(req: http.IncomingMessage, res: http.ServerResponse
   }
 }
 
+async function serveStaticFile(res: http.ServerResponse, filePath: string): Promise<void> {
+  try {
+    const file = await fs.readFile(filePath);
+    res.writeHead(200, { 'Content-Type': getContentType(filePath) });
+    res.end(file);
+  } catch (error: any) {
+    if (error?.code === 'ENOENT') {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Not found');
+      return;
+    }
+
+    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Unable to load file');
+  }
+}
+
 const server = http.createServer(async (req, res) => {
   if (!req.url) {
     res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -1012,6 +1226,38 @@ const server = http.createServer(async (req, res) => {
   if ((req.method === 'GET' || req.method === 'HEAD') && req.url === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(req.method === 'HEAD' ? undefined : await renderHome());
+    return;
+  }
+
+  if ((req.method === 'GET' || req.method === 'HEAD') && req.url === '/favicon.png') {
+    if (req.method === 'HEAD') {
+      res.writeHead(200, { 'Content-Type': 'image/png' });
+      res.end();
+      return;
+    }
+
+    await serveStaticFile(res, path.resolve(PUBLIC_DIRECTORY, 'favicon.png'));
+    return;
+  }
+
+  if ((req.method === 'GET' || req.method === 'HEAD') && req.url.startsWith('/assets/')) {
+    const assetPath = req.url.slice('/assets/'.length);
+    const safeAssetPath = path.normalize(assetPath).replace(/^(\.\.(\/|\\|$))+/, '');
+    const filePath = path.resolve(ASSETS_DIRECTORY, safeAssetPath);
+
+    if (!filePath.startsWith(ASSETS_DIRECTORY)) {
+      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Forbidden');
+      return;
+    }
+
+    if (req.method === 'HEAD') {
+      res.writeHead(200, { 'Content-Type': getContentType(filePath) });
+      res.end();
+      return;
+    }
+
+    await serveStaticFile(res, filePath);
     return;
   }
 

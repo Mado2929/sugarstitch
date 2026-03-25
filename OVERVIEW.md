@@ -16,7 +16,9 @@ The project supports both a command-line interface and a simple browser UI so th
 At a high level, SugarStitch now supports:
 
 - CLI scraping
+- CLI startup banner
 - local browser UI
+- light/dark mode toggle in the UI
 - selector presets
 - one-off selector overrides
 - saved site profiles
@@ -26,6 +28,7 @@ At a high level, SugarStitch now supports:
 - crawl language filtering
 - crawl pagination support for listing pages with regular paginated URLs
 - duplicate detection by `sourceUrl`
+- plain-text pattern artifact generation
 - PDF and image downloading
 
 ## Core Architecture
@@ -52,7 +55,7 @@ The shared scraper owns the real behavior. The CLI and UI should stay as thin ad
   CLI argument parsing, URL source handling, output path resolution, crawl option collection, and handoff into the shared scraper.
 
 - [`src/server.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/server.ts)
-  Small Node HTTP server that renders the HTML UI, handles preview/scrape form posts, manages loading-state UX, and returns result pages.
+  Small Node HTTP server that renders the HTML UI, serves local branding assets, handles preview/scrape form posts, manages loading-state UX, and returns result pages.
 
 - [`sugarstitch.profiles.json`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/sugarstitch.profiles.json)
   Starter saved profile config file. The UI and CLI know how to load profiles from it by default.
@@ -83,6 +86,7 @@ The shared scraper currently handles:
 - crawl language filtering
 - pagination seed expansion for listing pages
 - image and PDF download handling
+- plain-text pattern artifact generation
 - output JSON loading and append behavior
 - duplicate `sourceUrl` prevention
 
@@ -125,8 +129,9 @@ The preview flow:
 2. fetch the page HTML
 3. run selector extraction
 4. return title, description, materials, instructions, image URLs, and PDF URLs
-5. do not write JSON
-6. do not download assets
+5. also derive a fuller page-text block for plain-text artifact output
+6. do not write JSON
+7. do not download assets
 
 This is the safest way to validate selectors on a new site.
 
@@ -189,6 +194,7 @@ Each successful page becomes a `PatternData` object with:
 - `sourceUrl`
 - `localImages`
 - `localPdfs`
+- `localTextFile`
 
 Output behavior:
 
@@ -196,6 +202,7 @@ Output behavior:
 - duplicate `sourceUrl` entries are skipped before re-scraping
 - downloaded images go into `images/<sanitized-title>/`
 - downloaded PDFs go into `pdfs/<sanitized-title>/`
+- extracted page text is written to `texts/<sanitized-title>/pattern.txt`
 - all of that lives under the selected output directory
 
 ## UI Notes
@@ -208,6 +215,7 @@ Key design choices:
 - HTML assembled on the server
 - form-submit workflow instead of a client-side app
 - loading overlay and spinner so long requests feel active
+- persisted light/dark theme toggle with light mode as the default
 - result pages returned after preview or scrape completion
 
 Why it is structured this way:
@@ -225,6 +233,7 @@ The CLI acts as a thin adapter over the shared scraper. It currently handles:
 - URL list loading from files
 - output path and output directory resolution
 - crawl option parsing
+- startup banner rendering
 - preview vs full scrape routing
 
 If behavior is purely about command syntax or argument ergonomics, it belongs in [`src/index.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/index.ts).
