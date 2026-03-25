@@ -1,7 +1,7 @@
 {
   "name": "@pinkpixel/sugarstitch",
   "version": "1.0.0",
-  "description": "A CLI tool to scrape sewing patterns",
+  "description": "A CLI tool to scrape fiber arts patterns",
   "main": "dist/index.js",
   "bin": {
     "sugarstitch": "dist/index.js"

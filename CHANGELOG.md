@@ -8,7 +8,7 @@ The format is based on Keep a Changelog, and this project currently tracks relea
 
 ### Added
 
-- Initial public CLI for scraping sewing pattern pages into local JSON, image, and PDF files
+- Initial public CLI for scraping fiber arts pattern pages into local JSON, image, and PDF files
 - Plain-text pattern artifacts saved under `texts/<pattern_title>/pattern.txt` for each scraped page
 - README improvements covering installation, usage, selector discovery, troubleshooting, and output structure
 - MIT license
@@ -27,6 +27,7 @@ The format is based on Keep a Changelog, and this project currently tracks relea
 
 ### Changed
 
+- Broadened user-facing project wording from sewing-specific language to fiber arts language so the docs and CLI better reflect crochet, knitting, sewing, and related pattern sites
 - Corrected the CLI version string to `1.0.0`
 - Wired the package up as a real executable CLI with a `bin` entry and a post-build shebang step
 - Improved CLI option placeholders to use clearer argument names

@@ -19,9 +19,9 @@ const program = new Command();
 
 program
   .name('sugarstitch')
-  .description('✨ Bulk scrape sewing patterns, images, AND PDFs into sweet little local files ✨')
+  .description('✨ Bulk scrape fiber arts patterns, images, AND PDFs into sweet little local files ✨')
   .version('1.0.0')
-  .option('-u, --url <url>', 'A single URL of the sewing pattern to scrape')
+  .option('-u, --url <url>', 'A single URL of the pattern page to scrape')
   .option('-f, --file <file>', 'A text file containing a list of URLs (one per line)')
   .option('-o, --output <path>', 'Output JSON file name', 'pattern-data.json')
   .option('--output-dir <path>', 'Directory where JSON, images, and PDFs should be saved')
@@ -45,6 +45,42 @@ program
   .parse(process.argv);
 
 const options = program.opts();
+
+const ANSI_RESET = '\x1b[0m';
+const ANSI_PINK = '\x1b[38;5;205m';
+const ANSI_MINT = '\x1b[38;5;121m';
+const ANSI_SKY = '\x1b[38;5;117m';
+const ANSI_GOLD = '\x1b[38;5;223m';
+
+function colorize(line: string, color: string): string {
+  return `${color}${line}${ANSI_RESET}`;
+}
+
+function printBanner(): void {
+  if (!process.stdout.isTTY || process.env.NO_COLOR) {
+    console.log('\nSugarStitch\n');
+    return;
+  }
+
+  const bannerLines = [
+    colorize('███████╗██╗   ██╗ ██████╗  █████╗ ██████╗ ', ANSI_PINK),
+    colorize('██╔════╝██║   ██║██╔════╝ ██╔══██╗██╔══██╗', ANSI_MINT),
+    colorize('███████╗██║   ██║██║  ███╗███████║██████╔╝', ANSI_SKY),
+    colorize('╚════██║██║   ██║██║   ██║██╔══██║██╔══██╗', ANSI_GOLD),
+    colorize('███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║', ANSI_PINK),
+    colorize('╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝', ANSI_MINT),
+    colorize(' ███████╗████████╗██╗████████╗ ██████╗██╗  ██╗', ANSI_SKY),
+    colorize(' ██╔════╝╚══██╔══╝██║╚══██╔══╝██╔════╝██║  ██║', ANSI_GOLD),
+    colorize(' ███████╗   ██║   ██║   ██║   ██║     ███████║', ANSI_PINK),
+    colorize(' ╚════██║   ██║   ██║   ██║   ██║     ██╔══██║', ANSI_MINT),
+    colorize(' ███████║   ██║   ██║   ██║   ╚██████╗██║  ██║', ANSI_SKY),
+    colorize(' ╚══════╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝', ANSI_GOLD)
+  ];
+
+  console.log(`\n${bannerLines.join('\n')}`);
+  console.log(colorize('Sweet little fiber arts scraper', ANSI_GOLD));
+  console.log('');
+}
 
 function validateInputOptions(): void {
   if (options.url && options.file) {
@@ -110,6 +146,7 @@ async function getUrlsFromOptions(): Promise<string[]> {
 }
 
 async function run() {
+  printBanner();
   validateInputOptions();
 
   try {

@@ -1,10 +1,10 @@
 # SugarStitch
 
-SugarStitch is a TypeScript scraper for sewing pattern websites with both a CLI and a local browser UI. It can scrape individual pattern pages, batch lists of URLs, or discover pattern pages from an index page and then scrape those discovered links for titles, text, images, and PDFs.
+SugarStitch is a TypeScript scraper for fiber arts pattern websites with both a CLI and a local browser UI. It can scrape individual pattern pages, batch lists of URLs, or discover pattern pages from an index page and then scrape those discovered links for titles, text, images, and PDFs.
 
 ## What It Does
 
-- Scrapes a single sewing pattern URL or a list of URLs from a text file
+- Scrapes a single pattern URL or a list of URLs from a text file
 - Includes a simple local browser UI for people who prefer forms over command-line flags
 - Supports discovery crawl mode so one listing page can expand into many pattern pages
 - Supports crawl language filtering so discovered pages can stay in one language
@@ -17,6 +17,49 @@ SugarStitch is a TypeScript scraper for sewing pattern websites with both a CLI 
 - Shows an in-page loading state while preview or scrape requests are running
 - Downloads linked PDFs and page images when found
 - Skips already-known `sourceUrl` entries before re-scraping them
+
+## Best Supported Site Types
+
+SugarStitch works best on sites where the pattern content is already present in the HTML response and does not require a JavaScript app to render first.
+
+Typical use cases include:
+
+- sewing pattern blogs
+- crochet pattern pages
+- knitting pattern archives
+- quilting, embroidery, and other fiber arts tutorial or pattern sites
+
+Usually a good fit:
+
+- WordPress pattern blogs and article pages
+- Blogger and Blogspot pattern pages
+- WooCommerce product-style pattern pages
+- older handcrafted sites with normal HTML articles
+- free-pattern archive pages that link to regular child pages
+
+More mixed or site-specific:
+
+- Wix
+- Squarespace
+- Webflow
+- custom JavaScript-heavy sites
+
+Usually not a good fit with the current scraper approach:
+
+- React single-page apps
+- hash-routed sites like `#/free-patterns`
+- pages where the content only appears after client-side JavaScript runs
+
+Why:
+
+SugarStitch currently fetches page HTML and parses it directly. It does not run a full browser-rendered scraping flow yet, so JavaScript-only pages may return just the site shell instead of the real pattern content.
+
+If a site only partly works, try:
+
+- switching selector presets
+- using `Test Selectors` first
+- creating a saved site profile
+- adding one or two advanced selector overrides
 
 ## Install
 
@@ -294,7 +337,7 @@ UI flow:
 ## CLI Options
 
 ```text
--u, --url <url>                     A single URL of the sewing pattern to scrape
+-u, --url <url>                     A single URL of the pattern page to scrape
 -f, --file <file>                   A text file containing a list of URLs
 -o, --output <path>                 Output JSON file name
 --output-dir <path>                 Directory where JSON, images, and PDFs should be saved

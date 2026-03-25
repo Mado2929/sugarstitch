@@ -2,7 +2,7 @@
 
 ## Purpose
 
-SugarStitch is a local-first Node/TypeScript scraper for sewing pattern websites. It is meant to support a few related workflows without forcing users into one style of use:
+SugarStitch is a local-first Node/TypeScript scraper for fiber arts pattern websites. It is meant to support a few related workflows without forcing users into one style of use:
 
 - scrape one known pattern page
 - scrape many known pattern pages from a list
@@ -239,7 +239,7 @@ Examples of valid successful runs:
 - title plus images only
 - title, description, and article content with no PDF
 
-This matters because some sewing sites store the actual pattern inside a PDF, while others use a blog-post layout with visible HTML content.
+This matters because some fiber arts sites store the actual pattern inside a PDF, while others use a blog-post layout with visible HTML content.
 
 ## Known Constraints
 
