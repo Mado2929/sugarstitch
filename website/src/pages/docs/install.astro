@@ -1,0 +1,96 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const toc = [
+  { href: '#requirements', label: 'Requirements' },
+  { href: '#npm-install', label: 'Install with npm' },
+  { href: '#clone-repo', label: 'Clone the repo' },
+  { href: '#run-ui', label: 'Run the local UI' }
+];
+---
+
+<DocsLayout
+  title="Install SugarStitch"
+  description="Install SugarStitch globally from npm or by cloning the repository."
+  currentPath="/docs/install/"
+  pageTitle="Install SugarStitch"
+  pageIntro="Pick the quick global npm route if you mainly want the CLI, or clone the repository if you want the local UI and source code together."
+  toc={toc}
+>
+  <section class="content-panel" id="requirements">
+    <h2>Requirements</h2>
+    <p>SugarStitch runs on Node.js and uses npm scripts for the local development flow.</p>
+    <ul>
+      <li>Node.js 20 or newer is the safest baseline for the current TypeScript setup.</li>
+      <li>npm is used for installation and running scripts.</li>
+      <li>An internet connection is needed when you scrape live pattern pages.</li>
+    </ul>
+    <div class="callout">
+      <strong>Best fit:</strong> SugarStitch works best on traditional HTML pattern pages where the article content is already present in the fetched markup, rather than rendered by a JavaScript app after load.
+    </div>
+  </section>
+
+  <section class="content-panel" id="npm-install">
+    <h2>Install with npm</h2>
+    <p>This is the fastest path when you just want to run the scraper from your terminal.</p>
+
+    <h3>1. Install the package globally</h3>
+    <pre class="code-block"><code>npm install -g @pinkpixel/sugarstitch</code></pre>
+
+    <h3>2. Run a quick scrape</h3>
+    <pre class="code-block"><code>sugarstitch --url "https://example.com/pattern"</code></pre>
+
+    <h3>3. Add a preset when the site structure is recognizable</h3>
+    <pre class="code-block"><code>sugarstitch --url "https://example.com/pattern" --preset wordpress</code></pre>
+
+    <div class="callout">
+      <strong>Preset tip:</strong> Start with <span class="inline-code">generic</span> for unknown sites, <span class="inline-code">wordpress</span> for blog-style posts, and <span class="inline-code">woocommerce</span> for product-style pattern pages.
+    </div>
+  </section>
+
+  <section class="content-panel" id="clone-repo">
+    <h2>Clone the repo</h2>
+    <p>This path is best if you want the browser UI, local scripts, and source files in one place.</p>
+
+    <h3>1. Clone and install dependencies</h3>
+    <pre class="code-block"><code>git clone https://github.com/pinkpixel-dev/sugarstitch.git
+cd sugarstitch
+npm install</code></pre>
+
+    <h3>2. Optional: build the CLI output</h3>
+    <pre class="code-block"><code>npm run build</code></pre>
+
+    <h3>3. Run the CLI from source</h3>
+    <pre class="code-block"><code>npm run scrape -- --url "https://example.com/pattern"</code></pre>
+
+    <article class="screenshot-card">
+      <h3>What the terminal flow looks like</h3>
+      <img src="/screenshot_cli.png" alt="CLI output showing the SugarStitch banner and scrape progress" />
+      <p class="caption">The CLI prints the SugarStitch banner and progress messages while it fetches pages, downloads assets, and writes local files.</p>
+    </article>
+  </section>
+
+  <section class="content-panel" id="run-ui">
+    <h2>Run the local UI</h2>
+    <p>If you prefer forms over flags, the local browser UI gives you the same scraping controls in a calmer, more visual workflow.</p>
+
+    <h3>Start the server</h3>
+    <pre class="code-block"><code>npm run ui</code></pre>
+
+    <h3>Open the app</h3>
+    <pre class="code-block"><code>http://localhost:4177</code></pre>
+
+    <div class="two-up">
+      <article class="screenshot-card">
+        <h3>Homepage</h3>
+        <img src="/screenshot_homepage.png" alt="SugarStitch homepage showing the scrape form and sidebar guide" />
+        <p class="caption">The homepage includes mode selection, output controls, presets, saved profiles, and advanced selector overrides.</p>
+      </article>
+      <article class="screenshot-card">
+        <h3>In-progress state</h3>
+        <img src="/screenshot_scraping.png" alt="SugarStitch scraping progress overlay" />
+        <p class="caption">While a preview or scrape is running, the UI swaps into a progress overlay so you know the run is active.</p>
+      </article>
+    </div>
+  </section>
+</DocsLayout>

@@ -1,0 +1,142 @@
+---
+import '../styles/site.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  currentPath: string;
+  pageTitle?: string;
+  pageIntro?: string;
+  toc?: { href: string; label: string }[];
+}
+
+const { title, description, currentPath, pageTitle, pageIntro, toc = [] } = Astro.props;
+
+const navGroups = [
+  {
+    title: 'Start Here',
+    links: [
+      { href: '/', label: 'Overview' },
+      { href: '/docs/install/', label: 'Installation' },
+      { href: '/docs/use-the-app/', label: 'Use the App' }
+    ]
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand-link" href="/">
+          <img src="/favicon.png" alt="SugarStitch icon" />
+          <span>SugarStitch Docs</span>
+        </a>
+        <div class="topbar-actions">
+          <a class="pill-link" href="/docs/install/">Install</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">
+            <span data-theme-icon>Moon</span>
+            <span data-theme-label>Dark mode</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="main-grid">
+        <aside class="sidebar">
+          <span class="eyebrow">Sweet little scraping station</span>
+          {navGroups.map((group) => (
+            <>
+              <div class="nav-group-title">{group.title}</div>
+              <nav aria-label={group.title}>
+                {group.links.map((link) => (
+                  <a
+                    href={link.href}
+                    class:list={[
+                      'nav-link',
+                      currentPath === link.href ? 'active' : ''
+                    ]}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            </>
+          ))}
+          <div class="sidebar-note">
+            SugarStitch is happiest on regular HTML pattern pages with article content, images, or linked PDFs already present in the markup.
+          </div>
+        </aside>
+
+        <main class="content-column">
+          {pageTitle && (
+            <section class="content-panel">
+              <div class="page-heading">
+                <span class="section-label">Documentation</span>
+                <h1>{pageTitle}</h1>
+                {pageIntro && <p>{pageIntro}</p>}
+              </div>
+              {toc.length > 0 && (
+                <div class="toc">
+                  <div class="toc-title">On this page</div>
+                  <nav>
+                    {toc.map((item) => (
+                      <a href={item.href}>{item.label}</a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+            </section>
+          )}
+
+          <slot />
+        </main>
+      </div>
+
+      <footer class="footer">
+        SugarStitch turns pattern pages into local JSON, text, image, and PDF artifacts with a CLI and a cozy browser UI.
+      </footer>
+    </div>
+
+    <script is:inline>
+      const storageKey = 'sugarstitch-docs-theme';
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const label = document.querySelector('[data-theme-label]');
+      const icon = document.querySelector('[data-theme-icon]');
+
+      const updateToggle = (theme) => {
+        if (!label || !icon) return;
+        const dark = theme === 'dark';
+        label.textContent = dark ? 'Light mode' : 'Dark mode';
+        icon.textContent = dark ? 'Sun' : 'Moon';
+      };
+
+      const preferredTheme = () => {
+        const stored = localStorage.getItem(storageKey);
+        if (stored === 'light' || stored === 'dark') return stored;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+
+      const applyTheme = (theme) => {
+        root.setAttribute('data-theme', theme);
+        updateToggle(theme);
+      };
+
+      applyTheme(preferredTheme());
+
+      toggle?.addEventListener('click', () => {
+        const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(storageKey, nextTheme);
+        applyTheme(nextTheme);
+      });
+    </script>
+  </body>
+</html>

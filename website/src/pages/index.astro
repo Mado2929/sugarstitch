@@ -1,0 +1,94 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="SugarStitch Docs"
+  description="Installation and usage docs for SugarStitch, the fiber arts pattern scraper."
+  currentPath="/"
+>
+  <section class="hero-panel">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">Pattern scraping made sweet</span>
+        <h1>SugarStitch Documentation</h1>
+        <p>
+          SugarStitch is a TypeScript scraper for fiber arts pattern pages, with both a command-line workflow and
+          a local browser UI. These docs cover how to install it, run it, and pick the right flow for single pages,
+          batch jobs, and discovery crawls.
+        </p>
+        <div class="hero-actions">
+          <a class="cta cta-primary" href="/docs/install/">Install SugarStitch</a>
+          <a class="cta cta-secondary" href="/docs/use-the-app/">Learn the workflow</a>
+        </div>
+      </div>
+
+      <div class="hero-banner">
+        <img class="banner-light" src="/banner_light.png" alt="SugarStitch banner for light mode" />
+        <img class="banner-dark" src="/banner_dark.png" alt="SugarStitch banner for dark mode" />
+      </div>
+    </div>
+  </section>
+
+  <section class="hero-stats">
+    <article class="stat-card">
+      <strong>CLI and UI</strong>
+      <span>Use a quick terminal command or work from a local browser form at <span class="inline-code">localhost:4177</span>.</span>
+    </article>
+    <article class="stat-card">
+      <strong>Site-aware scraping</strong>
+      <span>Start with <span class="inline-code">generic</span>, <span class="inline-code">wordpress</span>, or <span class="inline-code">woocommerce</span> presets, then add selector overrides only where needed.</span>
+    </article>
+    <article class="stat-card">
+      <strong>Local outputs</strong>
+      <span>Each run can save JSON plus <span class="inline-code">images/</span>, <span class="inline-code">pdfs/</span>, and <span class="inline-code">texts/</span> for review.</span>
+    </article>
+  </section>
+
+  <section class="feature-grid">
+    <article class="feature-card">
+      <h3>Install your way</h3>
+      <p>Grab it globally from npm for the quickest path, or clone the repo if you want the UI and source side by side while you iterate.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Scrape one page or many</h3>
+      <p>Feed SugarStitch a single pattern URL, a text file full of URLs, or a listing page that needs discovery crawl mode first.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Tune extraction gently</h3>
+      <p>Saved profiles and advanced selector overrides help when a site is close to working but needs one or two custom selectors to land cleanly.</p>
+    </article>
+  </section>
+
+  <section class="content-panel">
+    <div class="page-heading">
+      <span class="section-label">What it looks like</span>
+    </div>
+
+    <div class="screenshot-grid">
+      <article class="screenshot-card">
+        <h3>Homepage</h3>
+        <img src="/screenshot_homepage.png" alt="SugarStitch homepage with scrape form and saved profiles panel" />
+        <p class="caption">The local UI starts with a form-first workflow for URLs, presets, output options, and discovery crawl settings.</p>
+      </article>
+      <article class="screenshot-card">
+        <h3>CLI</h3>
+        <img src="/screenshot_cli.png" alt="SugarStitch CLI" />
+        <p class="caption">The terminal flow is perfect for quick runs, automation, or batch scraping from a saved URL list.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="card-grid">
+    <article class="card">
+      <h3>Start with installation</h3>
+      <p>The install guide walks through both the global npm path and the clone-and-run development path, including the commands you actually need.</p>
+      <a class="cta cta-secondary" href="/docs/install/">Open installation guide</a>
+    </article>
+    <article class="card">
+      <h3>Move straight into usage</h3>
+      <p>The usage guide covers single-page scrapes, batch files, preview mode, crawl settings, and how the browser UI maps onto the CLI flags.</p>
+      <a class="cta cta-secondary" href="/docs/use-the-app/">Open usage guide</a>
+    </article>
+  </section>
+</DocsLayout>

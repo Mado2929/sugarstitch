@@ -1,0 +1,131 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const toc = [
+  { href: '#quick-start', label: 'Quick start' },
+  { href: '#cli-workflow', label: 'CLI workflow' },
+  { href: '#ui-workflow', label: 'UI workflow' },
+  { href: '#crawl-mode', label: 'Discovery crawl mode' },
+  { href: '#output', label: 'Output structure' }
+];
+---
+
+<DocsLayout
+  title="Use the SugarStitch App"
+  description="Learn how to use SugarStitch from the CLI or local UI."
+  currentPath="/docs/use-the-app/"
+  pageTitle="Use the app"
+  pageIntro="SugarStitch can scrape a single pattern page, a list of saved URLs, or a discovery page that branches into many pattern links. The CLI and the local UI map to the same core scraper."
+  toc={toc}
+>
+  <section class="content-panel" id="quick-start">
+    <h2>Quick start</h2>
+    <p>If you want the shortest path from install to results, start with one pattern page and a preset that matches the site structure.</p>
+    <pre class="code-block"><code>npm run scrape -- --url "https://example.com/pattern" --preset wordpress</code></pre>
+    <ul>
+      <li>Use <span class="inline-code">--url</span> for one page.</li>
+      <li>Use <span class="inline-code">--file</span> for a plain text list of URLs.</li>
+      <li>Use <span class="inline-code">--preview</span> first if you want to validate extraction before files are written.</li>
+    </ul>
+  </section>
+
+  <section class="content-panel" id="cli-workflow">
+    <h2>CLI workflow</h2>
+
+    <h3>Scrape one pattern page</h3>
+    <pre class="code-block"><code>npm run scrape -- --url "https://example.com/pattern" --preset generic</code></pre>
+
+    <h3>Scrape many URLs from a file</h3>
+    <pre class="code-block"><code>npm run scrape -- --file urls.txt</code></pre>
+
+    <h3>Preview without writing files</h3>
+    <pre class="code-block"><code>npm run scrape -- --url "https://example.com/pattern" --profile tildas-world --preview</code></pre>
+
+    <h3>Send output to a different folder</h3>
+    <pre class="code-block"><code>npm run scrape -- --url "https://example.com/pattern" --output-dir ./exports --output patterns.json</code></pre>
+
+    <div class="callout">
+      <strong>Saved profiles:</strong> point SugarStitch at a profile with <span class="inline-code">--profile &lt;id&gt;</span> when a site already has known selector overrides you want to reuse.
+    </div>
+
+    <article class="screenshot-card">
+      <h3>Terminal-first runs</h3>
+      <img src="/screenshot_cli.png" alt="Terminal screenshot showing SugarStitch CLI output" />
+      <p class="caption">The CLI is great for quick checks, automation, and repeatable batch runs where you already know the source URLs.</p>
+    </article>
+  </section>
+
+  <section class="content-panel" id="ui-workflow">
+    <h2>UI workflow</h2>
+    <p>The local UI is ideal when you want to test presets, compare overrides, or paste batches into a form instead of remembering flags.</p>
+
+    <ol>
+      <li>Run <span class="inline-code">npm run ui</span> and open <span class="inline-code">http://localhost:4177</span>.</li>
+      <li>Choose <span class="inline-code">Single URL</span> or paste multiple URLs.</li>
+      <li>Pick a saved profile or selector preset.</li>
+      <li>Add output settings or advanced selector overrides if needed.</li>
+      <li>Click <span class="inline-code">Test Selectors</span> first or go straight to <span class="inline-code">Start Scraping</span>.</li>
+    </ol>
+
+    <div class="screenshot-grid">
+      <article class="screenshot-card">
+        <h3>Form overview</h3>
+        <img src="/screenshot_homepage.png" alt="SugarStitch homepage showing the main scraping form" />
+        <p class="caption">Single URL mode, multi-URL paste mode, presets, and profile loading all live on the main screen.</p>
+      </article>
+      <article class="screenshot-card">
+        <h3>Finished run</h3>
+        <img src="/screenshot_completed.png" alt="SugarStitch completed run summary with log output" />
+        <p class="caption">After the scrape completes, the UI shows counts, logs, output paths, and the pattern titles that were captured.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="content-panel" id="crawl-mode">
+    <h2>Discovery crawl mode</h2>
+    <p>Use discovery crawl mode when you have a listing page, archive page, or “free patterns” hub instead of a direct pattern URL.</p>
+
+    <pre class="code-block"><code>npm run scrape -- \
+  --url "https://www.tildasworld.com/free-patterns/" \
+  --preset wordpress \
+  --crawl \
+  --crawl-depth 2 \
+  --crawl-pattern "free_pattern|pattern|quilt|pillow" \
+  --crawl-language english \
+  --crawl-paginate</code></pre>
+
+    <ul>
+      <li><span class="inline-code">--crawl</span> turns discovery mode on.</li>
+      <li><span class="inline-code">--crawl-depth</span> controls how many link levels deep the crawler follows.</li>
+      <li><span class="inline-code">--crawl-pattern</span> narrows what discovered links are allowed through.</li>
+      <li><span class="inline-code">--crawl-language</span> helps when a site mixes multiple language sections.</li>
+      <li><span class="inline-code">--crawl-paginate</span> adds paginated listing pages like <span class="inline-code">/page/2/</span> before discovery continues.</li>
+    </ul>
+
+    <article class="screenshot-card">
+      <h3>Progress while crawling or scraping</h3>
+      <img src="/screenshot_scraping.png" alt="SugarStitch loading state shown during scraping" />
+      <p class="caption">The UI keeps the run focused with a progress state while it fetches candidate pages and downloads files.</p>
+    </article>
+  </section>
+
+  <section class="content-panel" id="output">
+    <h2>Output structure</h2>
+    <p>A successful run writes one JSON entry per scraped page and may also save page text, images, and PDFs into local folders.</p>
+
+    <pre class="code-block"><code>{`{
+  "title": "Pattern Title",
+  "description": "Short description from the page",
+  "materials": ["Cotton fabric", "Stuffing", "Thread"],
+  "instructions": ["Cut the pieces", "Sew the body", "Stuff and close"],
+  "sourceUrl": "https://example.com/pattern",
+  "localImages": ["images/pattern_title/image_1.jpg"],
+  "localPdfs": ["pdfs/pattern_title/pattern.pdf"],
+  "localTextFile": "texts/pattern_title/pattern.txt"
+}`}</code></pre>
+
+    <div class="callout">
+      <strong>Typical output folder:</strong> expect the JSON file plus <span class="inline-code">images/</span>, <span class="inline-code">pdfs/</span>, and <span class="inline-code">texts/</span> folders inside the selected output directory.
+    </div>
+  </section>
+</DocsLayout>
