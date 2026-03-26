@@ -121,9 +121,17 @@ function pageTemplate(content: string): string {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      gap: 12px;
     }
 
-    .theme-toggle {
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle,
+    .icon-link {
       display: inline-flex;
       align-items: center;
       gap: 10px;
@@ -138,7 +146,8 @@ function pageTemplate(content: string): string {
       transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
     }
 
-    .theme-toggle:hover {
+    .theme-toggle:hover,
+    .icon-link:hover {
       transform: translateY(-1px);
     }
 
@@ -147,7 +156,8 @@ function pageTemplate(content: string): string {
       color: var(--muted);
     }
 
-    .theme-icon {
+    .theme-icon,
+    .icon-link-icon {
       width: 18px;
       height: 18px;
       display: inline-flex;
@@ -157,7 +167,8 @@ function pageTemplate(content: string): string {
       flex: 0 0 auto;
     }
 
-    .theme-icon svg {
+    .theme-icon svg,
+    .icon-link-icon svg {
       width: 18px;
       height: 18px;
       stroke: currentColor;
@@ -165,6 +176,11 @@ function pageTemplate(content: string): string {
       stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .icon-link {
+      padding: 10px 12px;
+      text-decoration: none;
     }
 
     .hero,
@@ -525,6 +541,10 @@ function pageTemplate(content: string): string {
       .grid, .row, .stats {
         grid-template-columns: 1fr;
       }
+
+      .shell-top {
+        justify-content: space-between;
+      }
     }
   </style>
 </head>
@@ -541,10 +561,29 @@ function pageTemplate(content: string): string {
   </div>
   <main class="shell">
     <div class="shell-top">
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-        <span id="themeIcon" class="theme-icon" aria-hidden="true"></span>
-        <span id="themeLabel" class="theme-toggle-label">Dark mode</span>
-      </button>
+      <div class="top-actions">
+        <a
+          class="icon-link"
+          href="https://sugarstitch.pinkpixel.dev"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open SugarStitch docs"
+          title="Open SugarStitch docs"
+        >
+          <span class="icon-link-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 4.75h8.5a2.75 2.75 0 0 1 2.75 2.75V19.25H8.75A2.75 2.75 0 0 0 6 22"></path>
+              <path d="M6 4.75A2.75 2.75 0 0 0 3.25 7.5v11.75H12"></path>
+              <path d="M8.5 8.5h6"></path>
+              <path d="M8.5 11.5h6"></path>
+            </svg>
+          </span>
+        </a>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+          <span id="themeIcon" class="theme-icon" aria-hidden="true"></span>
+          <span id="themeLabel" class="theme-toggle-label">Dark mode</span>
+        </button>
+      </div>
     </div>
     ${content}
   </main>

@@ -5,9 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "cf:dev": "npm run build && wrangler pages dev dist",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name sugarstitch-docs"
   },
   "dependencies": {
     "astro": "^5.5.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.10.0"
   }
 }
